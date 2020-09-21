@@ -4,8 +4,8 @@ def carPooling(trips, capacity):
     cap_arr = [0 for _ in range(1000)]
 
 ''' Iterating over trips, we create a capacity array that stores how many people are added or removed at certain times'''
+    cmax = -1
     for idx,trip in enumerate(trips):
-        cmax = -1
         cmax = max(cmax,trip[2])
         cap_arr[trip[2]] -= trip[0]
         cap_arr[trip[1]]+= trip[0]
