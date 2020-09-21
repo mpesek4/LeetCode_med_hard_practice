@@ -5,54 +5,45 @@ class TreeNode(object):
         self.right = right
 
 
-def distanceK(root, target, K):
-    def rec2(current):
-        if current is not None:
-            if type(current.val) == int:
-                rec2(current.left)
-                rec2(current.right)
+def distanceK(self,root, target, K):
+        ''' since we need to go down and up the tree from our target, I felt it was better to turn the tree into a graph
+        the rec function just connects every node to its parent in a dictionary called connection_dict so we don't modify our tree'''
+        def rec(current, parent):
+            if current is None:
                 return
-            current.val = current.val[0]
-            rec2(current.left)
-            rec2(current.right)
-        
-    def rec(current, parent):
-        if current is None:
-            return
-        old_val = current.val
-        # current.val = [old_val, parent]
-        connection_dict[current] = parent
-        rec(current.left,current)
-        rec(current.right,current)
-     
-        
-     
-    connection_dict = {}
-    rec(root, None)
-    
-    answer = []
-    explored = {}
-    
-    def dfs(current, moves_left):
-        if current in explored:
-            return
-        explored[current] = 1
-        if current is None:
-            return
-        if moves_left == 0:
-            current.val = current.val[0]
-            answer.append(current)
-            return
-        children = [current.left,current.right,current.val[1]]
-        
-        for child in children:
-            dfs(child, moves_left-1)
-            
-    dfs(target, K)
-    rec2(root)
-    
-    
-    return answer[0:]
+            old_val = current.val
+            # current.val = [old_val, parent]
+            connection_dict[current] = parent
+            rec(current.left,current)
+            rec(current.right,current)
+
+
+
+        connection_dict = {}
+        rec(root, None)
+
+        answer = []
+        explored = {}
+        ''' now that our tree is a graph, just do a DFS keeping track of explored nodes and stopping if we are more edges away than our target variable'''
+        def dfs(current, moves_left):
+            if current in explored:
+                return
+            explored[current] = 1
+            if current is None:
+                return
+            if moves_left == 0:
+                answer.append(current.val)
+                return
+            children = [current.left,current.right,connection_dict[current]]
+
+            for child in children:
+                dfs(child, moves_left-1)
+
+        dfs(target, K)
+
+
+
+        return answer  ''' time complexity is O(V+E) and will be worse the more connected the graph is, space is the height of the tree for DFS'''
 
 n7 = TreeNode(7,None,None)
 n6 = TreeNode(6,None,None)
