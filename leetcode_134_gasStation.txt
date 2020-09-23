@@ -1,0 +1,24 @@
+
+https://leetcode.com/problems/gas-station/
+
+def canCompleteCircuit(self,gas, cost):
+        n = len(gas)
+        def circuitFromI(i, gas, cost):
+            current_gas = gas[i]
+            current_idx = i
+            count = 0
+            while current_gas >= cost[current_idx]:
+                if count == n:
+                    return True      
+                current_gas-= cost[current_idx]
+                current_idx += 1
+                current_idx %= n
+                current_gas+=gas[current_idx]
+                count+=1
+            return False
+
+
+        for i in range(n):
+            if circuitFromI(i, gas, cost):
+                return i
+        return -1
