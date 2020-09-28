@@ -11,6 +11,7 @@ def numSubarrayProductLessThanK(self,nums, k):
     ans = 0
     window_length = 0
     # for every index we need to find a window_length
+    # runtime will be O(n) since j never resets, always goes from 0=> len(nums) as well
     for i in range(len(nums)):
         j = max(i, j)
         window_length = max(0,window_length)

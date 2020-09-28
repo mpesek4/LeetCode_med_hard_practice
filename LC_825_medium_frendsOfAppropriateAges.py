@@ -2,7 +2,7 @@
 #https://leetcode.com/problems/friends-of-appropriate-ages/
 
 
-# My solution I believe works as a O(nlogn) solution but isn't passing last test cases because N is 20000, whereas accepted solutions are log(a^2) where a is 120 using dictionary
+# O(nlogn) passes all cases
 
 def numFriendRequests(ages):
     def sum_range(n):
