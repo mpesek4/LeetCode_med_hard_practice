@@ -7,8 +7,7 @@ def ambiguousCoordinates(S):
         # if there was a decimal and hte last number is 0
         # leadings zeroes before decimal
         s  = "".join(s)
-        s = s.split(".")
-        
+        s = s.split(".")  
         leftHalf = s[0]
         rightHalf = s[1]
         if len(leftHalf) > 1 and leftHalf[0] == '0':
@@ -16,7 +15,6 @@ def ambiguousCoordinates(S):
         if rightHalf[-1] == '0':
             return False
         return True
-    
     def validPermutations(s,curr_half):
         #this function tries decimals in every location
         #and if it is a valid one we add it to l or r, which is given by curr_half
@@ -35,7 +33,8 @@ def ambiguousCoordinates(S):
             if zeroCheck(temp):
                 curr_half.append(temp)
                 ans+=1
-        return ans                    
+        return ans # returned ans because originally I thought we had to know the number of values, but changed this function to just updated our curr_half array
+                    # because we are instead printing out every combo, not returning num comboes                    
     s = list(S)
     s = s[1:-1]
     answer = [] 
@@ -45,7 +44,6 @@ def ambiguousCoordinates(S):
         right = s[i:]
         l = []
         r = [] 
-        
         numLeft = validPermutations(left , l)
         numRight = validPermutations(right , r)
         # once we have all the valid permutations we just create the strings as stated in problem description, number of strings is numLeft*numRight (didnt end up using that value)
