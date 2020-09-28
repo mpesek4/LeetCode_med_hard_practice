@@ -22,10 +22,11 @@ def shortestToChar(S, C):
             indices_of_char.append(idx)
     answer = [0 for _ in range(len(S))]
     
+
+    # we looped once to store all indices of target, now we just do a binary search for each index to find two closest targets, take min distance between options
     for idx,char in enumerate(list(S)):
         if char == C:
             answer[idx] = 0
-            
         else:
             oneBefore = binarySearch(indices_of_char, idx)
             if oneBefore == -1:
