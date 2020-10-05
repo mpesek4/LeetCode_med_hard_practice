@@ -35,8 +35,8 @@ def isPossible(self,nums):
         n = len(nums)
         k = 0
         for i in range(n):
-            if nums[i] - nums[i-1] > 1:
+            if nums[i] - nums[i-1] > 1: # keeping track of chunks of consecutive integers
                 if not isValid(nums,k,i-1):
                     return False
                 k = i
-        return isValid(nums,k,n-1)
+        return isValid(nums,k,n-1) # last chunk 
