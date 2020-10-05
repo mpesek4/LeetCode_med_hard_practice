@@ -23,7 +23,9 @@ def isPossible(self,nums):
             twos = [0 for _ in range(n+1)] # number of subsequences of length two ending with value i-1
 
             for i in range(l,r+1): # frequency of each number in our original array
-                freq[nums[i]-nums[l]]+=1
+                freq[nums[i]-nums[l]]+=1 # since we are doing a chunk of our original array, we map our indexes to start at 0 instead of our initial index 
+                                                # so that we can keep track of our new array logic with easier indexing, so if 5 is the first value of our array
+                                                # it will actually be index 0, and 6 would be index 1 ...etc etc
 
             for i in range(n):
                 if freq[i] < ones[i] + twos[i]: # if we have subsequences that are ending at i-1, we are required to add to them
