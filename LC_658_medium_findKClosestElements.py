@@ -50,6 +50,8 @@ def findClosestElements(arr, k, x):
 
     # Now we use a 2 pointer approach, we keep checking wehether the next left or next right element is closer and update answer and our pointers accordingly
     while k > 0:
+        # the negative one checks let us know we no longer have elements to one side, so we just add the remaining k elements from the other side,
+        # no other checks needed because they said a solution is guaranteed to exist
         if l == -1:
             answer.append(arr[r])
             k-=1
