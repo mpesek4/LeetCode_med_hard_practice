@@ -2,45 +2,41 @@
 # https://leetcode.com/contest/leetcode-weekly-contest-45/problems/split-array-into-consecutive-subsequences/
 
 import copy
-def isPossible(nums): 
-    def isValid(answer):
-        for element in answer:
-            if len(element) < 3:
-                return False
-        return True
-    
-    def rec(rem_nums, splits, answer):
-        if len(rem_nums) == 0:
-            if isValid(answer):
-                return True
-            else:
-                return False       
-        temp = list(map(str,rem_nums))
-        x = "".join(temp)
-        if x in explored:
-            return False
-        
-       
-        dp[x] = True
-        
-        for i in range(splits):
-            temp = copy.deepcopy(answer)
-            if len(temp[i]) == 0 or rem_nums[0] == temp[i][-1] + 1:
-                temp[i].append(rem_nums[0])
-                x = rec(rem_nums[1:], splits, temp)
-                if x == True:
-                    return True
-        return False
-    cmax = -1
-    dp = {}
-    for num in nums:
-        if num in dp:
-            dp[num] +=1
-        else:
-            dp[num] = 1
+# prev answer was not a good DP solution, checking way too many comboes even with some pruning
+
+# here is the greedy approach
+
+
+def isPossible(self,nums):
+        # this function checks a segment of numbers
+        # example: if we are checking a val of 4, we want to greedily add to any subsequence that ends in 3 that has a length of 1, and then calculate how many new
+        # subsequences will start with 4
+        # The number of subsequences that start with 4 depends on how many subsequences we terminated with 3, so it is just freq[i]-freq[i-1]
+
+        # we fail our check if the number of subsequences ending in 3 (ones[3]+twos[3] rep these sequences with length of 1 and 2) is greater than the frequency of 4
+        # we also fail if at the end we couldn't append to our subsequences of length one of two, because the requirement is that they are min length 3
+        def isValid(nums, l, r):
+            n = nums[r]-nums[l]+1
+
+            freq = [0 for _ in range(n+1)]
+            ones = [0 for _ in range(n+1)] # number of subsequences of length one ending with value i-1
+            twos = [0 for _ in range(n+1)] # number of subsequences of length two ending with value i-1
+
+            for i in range(l,r+1): # frequency of each number in our original array
+                freq[nums[i]-nums[l]]+=1
+
+            for i in range(n):
+                if freq[i] < ones[i] + twos[i]: # if we have subsequences that are ending at i-1, we are required to add to them
+                    return False
+                twos[i+1] = ones[i] # always append to our ones first, so twos are now what previous ones were
+                ones[i+1] = max(0,freq[i]- freq[i-1]) # ones is the left over values we couldn't append
             
-        cmax = max(cmax, dp[num])
-    explored = {}
-    answer = [[] for _ in range(cmax)]
-    
-    return rec(nums, cmax, answer)
+            return ones[n] == 0 and twos[n] == 0 # after iterating we can't have any sequences with length one or 2
+        n = len(nums)
+        k = 0
+        for i in range(n):
+            if nums[i] - nums[i-1] > 1:
+                if not isValid(nums,k,i-1):
+                    return False
+                k = i
+        return isValid(nums,k,n-1)
