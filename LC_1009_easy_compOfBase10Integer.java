@@ -16,3 +16,6 @@ public int bitwiseComplement(int N) {
         String answer = sb.toString();
         return Integer.parseInt(answer,2);
     }
+
+
+
